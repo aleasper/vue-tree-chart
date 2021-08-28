@@ -141,6 +141,7 @@
 //   owner_id = fields.Int(required=True, allow_none=False) кто поставил
 //   assigner_id = fields.Int(required=True, allow_none=False) кто выполняет
 import {getRequest, postRequest} from "../base/http-work";
+import {CONST} from "./consts";
 
 export default {
   name: "TaskCreation",
@@ -158,7 +159,7 @@ export default {
       owner_id: null,
       assigner_id: null,
 
-      backendURL: 'http://172.24.8.169:5000',
+      backendURL: CONST.backedRoute,
 
       taskCreated: false
 

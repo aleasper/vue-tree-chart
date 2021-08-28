@@ -17,6 +17,14 @@
         :color="selectedMenu === 'creation' ? 'info' : ''"
       >Создание задачи</v-btn
       >
+      <v-btn
+        class="menu-item"
+        :to="Cons.TASK_LIST"
+        text
+        style="margin-left: 32px;"
+        :color="selectedMenu === 'taskList' ? 'info' : ''"
+      >Неназначенные задачи</v-btn
+      >
     </v-toolbar>
     <router-view style="width: 100%; height: 100%;" />
   </v-app>
@@ -52,6 +60,9 @@ export default {
           break;
         case `/${Cons.TASK_CREATION}`:
           this.selectedMenu = 'creation';
+          break;
+        case `/${Cons.TASK_LIST}`:
+          this.selectedMenu = 'taskList';
           break;
         default:
           this.selectedMenu = 'canvas';
