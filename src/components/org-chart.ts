@@ -46,11 +46,11 @@ class OrgChart {
     this.height = window.innerHeight
     this.padding = 20
     // tree node size
-    this.nodeWidth = 180
-    this.nodeHeight = 280
+    this.nodeWidth = 300
+    this.nodeHeight = 340
     // org unit size
     this.unitPadding = 20
-    this.unitWidth = 140
+    this.unitWidth = 280
     this.unitHeight = 100
     // animation duration
     this.duration = 100
@@ -357,7 +357,7 @@ class OrgChart {
         data.name,
         indexX + self.unitPadding,
         indexY + self.unitPadding,
-        '20px',
+        '24px',
         '#ffffff'
       )
 
@@ -374,10 +374,10 @@ class OrgChart {
           '#000000'
         )
       }
-      if (data.subtitle) {
+      if (data.position) {
         Util.text(
           self.context,
-          data.subtitle,
+          data.position,
           indexX + self.unitPadding,
           indexY + self.unitPadding + 24 + 20 + 20,
           '20px',

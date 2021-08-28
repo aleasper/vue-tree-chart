@@ -10,6 +10,7 @@
       <div
         v-for="child in person.children"
         :key="child.id"
+        v-on:click="goToPerson(child)"
         class="sub-person"
       >
         <p>{{child.name}}</p>
@@ -39,6 +40,11 @@ export default {
       required: true
     }
   },
+  methods: {
+    goToPerson(person){
+      this.$emit('go-to-person', person);
+    }
+  }
 }
 </script>
 

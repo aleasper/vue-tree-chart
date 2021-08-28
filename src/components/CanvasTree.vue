@@ -1,19 +1,25 @@
 <template>
   <div id="org-chart-container">
-    <div class="menu-container">
+    <div :class="['menu-container', {'close': !panelOpen}]">
+      <button
+        ref="openClosePanelBtn"
+        class="open-close-panel-btn open"
+        @click="openClosePanel"
+      ></button>
       <person
-        v-if="personIsSelected"
+        v-if="personIsSelected && panelOpen"
         :person="selectedPerson"
+        @go-to-person="selectPerson"
       ></person>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import OrgChart from './org-chart'
-import Vue from 'vue'
-import { generateOrgChartData, Data } from '../base/data-generator'
-import { getRequest } from '../base/http-work'
+import OrgChart from './org-chart';
+import Vue from 'vue';
+import { generateOrgChartData, Data } from '../base/data-generator';
+import { getRequest } from '../base/http-work';
 import Person from './Person.vue';
 
 export default Vue.extend({
@@ -23,6 +29,7 @@ export default Vue.extend({
   },
   data() {
     return {
+      panelOpen: false,
       data: null,
       orgChart: null,
       supportActions: [
@@ -70,8 +77,14 @@ export default Vue.extend({
       this.orgChart.draw(this.data)
     },
     selectPerson(person) {
+      if (!this.panelOpen) this.$refs['openClosePanelBtn'].click();
       this.selectedPerson = person;
       this.personIsSelected = Object.keys(this.selectedPerson).length !== 0;
+    },
+    openClosePanel(e){
+      e.target.classList.toggle('open');
+      e.target.classList.toggle('close');
+      this.panelOpen = !this.panelOpen;
     }
   }
 })
@@ -105,11 +118,35 @@ export default Vue.extend({
   border-right: 2px solid #2196f3;
   padding: 0.4em;
 }
+.menu-container.close {
+  width: 2em;
+  min-width: 2em;
+}
 .action-title {
   font-size: 28px;
 }
 
 .action-item {
   font-size: 24px;
+}
+.open-close-panel-btn {
+  border: none;
+  background-repeat: no-repeat;
+  background-size: 2em;
+  width: 2em;
+  height: 2em;
+  margin-left: auto;
+}
+.open-close-panel-btn.open {
+  background-image: url("../assets/right-arrow.png");
+
+}
+.open-close-panel-btn.close {
+  background-image: url("../assets/right-arrow.png");
+  -webkit-transform: rotate(180deg);
+  -moz-transform: rotate(180deg);
+  -ms-transform: rotate(180deg);
+  -o-transform: rotate(180deg);
+  transform: rotate(180deg);
 }
 </style>
