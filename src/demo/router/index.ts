@@ -16,11 +16,6 @@ export default new Router({
       path: '/' + Cons.CANVAS_TREE,
       name: Cons.CANVAS_TREE,
       component: CanvasTree
-    },
-    {
-      path: '/' + Cons.SVG_TREE,
-      name: Cons.SVG_TREE,
-      component: VueTree
     }
   ]
 })

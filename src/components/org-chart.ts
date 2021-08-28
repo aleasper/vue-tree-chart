@@ -50,7 +50,7 @@ class OrgChart {
     this.unitWidth = 140
     this.unitHeight = 100
     // animation duration
-    this.duration = 600
+    this.duration = 100
     this.scale = 1.0
   }
 
@@ -357,17 +357,30 @@ class OrgChart {
         '20px',
         '#ffffff'
       )
+
       // Util.text(self.context, data.title, indexX + self.unitPadding, indexY + self.unitPadding + 30, '20px', '#000000')
       const maxWidth = self.unitWidth - 2 * self.unitPadding
-      Util.wrapText(
-        self.context,
-        data.title,
-        indexX + self.unitPadding,
-        indexY + self.unitPadding + 24,
-        maxWidth,
-        20,
-        '#000000'
-      )
+      if (data.position) {
+        Util.wrapText(
+          self.context,
+          data.position,
+          indexX + self.unitPadding,
+          indexY + self.unitPadding + 24,
+          maxWidth,
+          20,
+          '#000000'
+        )
+      }
+      if (data.subtitle) {
+        Util.text(
+          self.context,
+          data.subtitle,
+          indexX + self.unitPadding,
+          indexY + self.unitPadding + 24 + 20 + 20,
+          '20px',
+          '#ffffff'
+        )
+      }
     })
   }
 
@@ -410,7 +423,9 @@ class OrgChart {
       )
       const node = self.colorNodeMap[colorStr]
       if (node) {
-        self.toggleTreeNode(node.data()[0])
+        console.log('click on node: ', node);
+        console.log(node.data()[0]);
+        // self.toggleTreeNode(node.data()[0])
         self.update(node.data()[0])
       }
     })

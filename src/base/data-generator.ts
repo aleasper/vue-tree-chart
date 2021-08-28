@@ -1,75 +1,43 @@
 export interface Data {
+  id: number
   name: string
-  title: string
+  position: string
   children: any
 }
 
-export function generateOrgChartData(depth: number) {
+const createRandomPerson = (id) => {
   const data: Data = {
-    name: 'Lao Lao',
-    title: 'general manager',
+    id: id,
+    name: id / 2 ? 'Пупа' : 'Лупа',
+    position: 'Заводчанин',
     children: [
-      { name: 'Bo Miao', title: 'department manager' },
-      {
-        name: 'Su Miao',
-        title: 'department manager',
-        children: [
-          { name: 'Tie Hua', title: 'senior engineer' },
-          {
-            name: 'Hei Hei',
-            title: 'senior engineer',
-            children: [
-              { name: 'Pang Pang', title: 'engineer' },
-              { name: 'Xiang Xiang', title: 'UE engineer' }
-            ]
-          }
-        ]
-      },
-      { name: 'Hong Miao', title: 'department manager' }
     ]
   }
+  return data;
+}
+
+const AddChildToPerson = (person, child) => {
+  person['children'].push(child);
+  return person;
+}
+
+export function generateOrgChartData(depth: number = 3) {
+  let lastId = 0;
+  const data: Data = {
+    id: lastId,
+    name: 'Иван Иванович',
+    position: 'Генеральный директор',
+    children: [
+    ]
+  }
+  lastId++;
 
   for (let i = 0; i < 3; i++) {
-    data['children'].push({
-      name: 'Lao Lao',
-      title: 'general manager',
-      children: [
-        { name: 'Bo Miao', title: 'department manager' },
-        {
-          name: 'Su Miao',
-          title: 'department manager',
-          children: [{ name: 'Tie Hua', title: 'senior engineer' }]
-        }
-      ]
-    })
+    const temp = createRandomPerson(++lastId);
+    const rPerson = AddChildToPerson(temp, AddChildToPerson(createRandomPerson(++lastId), createRandomPerson(++lastId)));
+    data['children'].push(rPerson);
   }
 
-  let temp = data
-  for (let i = 0; i < depth; i++) {
-    if (!temp.children) {
-      temp.children = []
-    }
-    temp.children.push({
-      name: 'Lao Lao',
-      title: 'general manager',
-      children: [
-        { name: 'Bo Miao', title: 'department manager' },
-        {
-          name: 'Su Miao',
-          title: 'department manager',
-          children: [
-            { name: 'Tie Hua', title: 'senior engineer' },
-            {
-              name: 'Hei Hei',
-              title: 'senior engineer',
-              children: [{ name: 'Xiang Xiang', title: 'UE engineer' }]
-            }
-          ]
-        }
-      ]
-    })
-    temp = temp.children[0]
-  }
   return data
 }
 

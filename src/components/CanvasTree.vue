@@ -1,26 +1,6 @@
 <template>
   <div id="org-chart-container">
-    <div class="menu-container">
-      <v-layout row>
-        <v-btn @click="bigger()">+</v-btn>
-        <v-btn @click="smaller()">-</v-btn>
-      </v-layout>
-
-      <v-card>
-        <v-card-title>
-          <div slot="header" class="action-title">
-            <span>Support actions</span>
-          </div>
-          <div
-            v-for="action in supportActions"
-            :key="action"
-            class="action-item"
-          >
-            {{ '* ' + action }}
-          </div>
-        </v-card-title>
-      </v-card>
-    </div>
+    <div class="menu-container"></div>
   </div>
 </template>
 
@@ -28,6 +8,7 @@
 import OrgChart from './org-chart'
 import Vue from 'vue'
 import { generateOrgChartData, Data } from '../base/data-generator'
+import { getRequest } from '../base/http-work'
 
 export default Vue.extend({
   name: 'org-chart',
@@ -40,15 +21,27 @@ export default Vue.extend({
         'drag canvas',
         'use mouse wheel to zoom',
         'button control to zoom'
-      ]
+      ],
+      backendURL: 'http://172.24.8.169:5000'
     }
   },
   created() {
-    this.data = generateOrgChartData(10)
+    // this.data = generateOrgChartData(10);
   },
   mounted() {
-    this.orgChart = new OrgChart()
-    this.orgChart.draw(this.data)
+    getRequest(`${this.backendURL}//api/structure`, '', {}).then((res) => {
+      if (!res['status'] || !res['body']['status']) {
+        alert('Всё плохо)')
+        return
+      }
+      console.log(res)
+      this.tree = res['body']['tree']
+      this.data = this.tree[0]
+      console.log(this.data)
+
+      this.orgChart = new OrgChart()
+      this.orgChart.draw(this.data)
+    })
   },
   methods: {
     test() {
@@ -59,6 +52,10 @@ export default Vue.extend({
     },
     smaller() {
       this.orgChart.smaller()
+    },
+    updateData(data) {
+      this.data = data
+      this.orgChart.draw(this.data)
     }
   }
 })
@@ -81,17 +78,15 @@ export default Vue.extend({
 
 .menu-container {
   position: absolute;
-  padding-top: 16px;
-  padding-left: 16px;
-  padding-right: 16px;
-  padding-bottom: 156px;
   display: flex;
   align-items: center;
   flex-direction: column;
   vertical-align: top;
-  width: 400px;
+  width: 30vw;
+  min-width: 300px;
   height: 100%;
-  background-color: rgba(238, 237, 236, 0.5);
+  background-color: #ffffff;
+  border-right: 2px solid #2196f3;
 }
 .action-title {
   font-size: 28px;
