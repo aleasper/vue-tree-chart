@@ -3,6 +3,7 @@ import Util from '../base/utils'
 
 class OrgChart {
   d3: any
+  vueParent: any
   width: number
   height: number
   padding: number
@@ -26,7 +27,9 @@ class OrgChart {
   onDrag_: boolean
   dragStartPoint_: { x: number; y: number }
 
-  constructor() {
+  constructor(vueParent: any) {
+    this.vueParent = vueParent;
+    console.log(this.vueParent);
     this.d3 = d3
     this.init()
   }
@@ -423,10 +426,12 @@ class OrgChart {
       )
       const node = self.colorNodeMap[colorStr]
       if (node) {
-        console.log('click on node: ', node);
-        console.log(node.data()[0]);
+        // console.log('click on node: ', node);
+        // console.log(node.data()[0]);
         // self.toggleTreeNode(node.data()[0])
         self.update(node.data()[0])
+        const personData = Object.assign({}, node.data()[0]['data']);
+        this.vueParent.selectPerson(Object.assign({}, personData));
       }
     })
   }
