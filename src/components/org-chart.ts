@@ -374,16 +374,6 @@ class OrgChart {
           '#000000'
         )
       }
-      if (data.position) {
-        Util.text(
-          self.context,
-          data.position,
-          indexX + self.unitPadding,
-          indexY + self.unitPadding + 24 + 20 + 20,
-          '20px',
-          '#ffffff'
-        )
-      }
     })
   }
 
@@ -426,10 +416,7 @@ class OrgChart {
       )
       const node = self.colorNodeMap[colorStr]
       if (node) {
-        // console.log('click on node: ', node);
-        // console.log(node.data()[0]);
-        // self.toggleTreeNode(node.data()[0])
-        self.update(node.data()[0])
+        self.update(node.data()[0]);
         const personData = Object.assign({}, node.data()[0]['data']);
         this.vueParent.selectPerson(Object.assign({}, personData));
       }

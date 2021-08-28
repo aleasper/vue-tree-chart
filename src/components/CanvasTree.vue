@@ -32,12 +32,6 @@ export default Vue.extend({
       panelOpen: false,
       data: null,
       orgChart: null,
-      supportActions: [
-        'click node to toggle',
-        'drag canvas',
-        'use mouse wheel to zoom',
-        'button control to zoom'
-      ],
       selectedPerson : {},
       personIsSelected: false,
 
