@@ -1,48 +1,50 @@
 <template>
   <div class="task-list-wrapper">
-    <task
-      v-for="task in tasks"
-      :key="task.id"
-      :task="task"
-    ></task>
+    <task v-for="task in tasks" :key="task.id" :task="task"></task>
   </div>
 </template>
 
 <script>
-import Task from './Task.vue';
-import {CONST} from "./consts";
-import {getRequest} from "../base/http-work";
+import Task from './Task.vue'
+import { CONST } from './consts'
+import { getRequest } from '../base/http-work'
 
 export default {
-  name: "TaskList",
+  name: 'TaskList',
   components: {
-    'task': Task
+    task: Task
   },
   data: () => {
     return {
       tasks: [],
-      backendURL: CONST.backedRoute,
+      backendURL: CONST.backedRoute
     }
   },
-  methods: {
-
-  },
+  methods: {},
   created() {
-    getRequest(`${this.backendURL}/api/task`, {started: false}, {}).then((res) => {
-      if (!res['status'] || !res['body']['status']) {
-        alert('Всё плохо)')
-        return
+    getRequest(`${this.backendURL}/api/task`, { started: false }, {}).then(
+      (res) => {
+        if (!res['status'] || !res['body']['status']) {
+          alert('Всё плохо)')
+          return
+        }
+        console.log(res)
+        this.tasks = res['body']['tasks']
       }
-      console.log(res)
-      this.tasks = res['body']['tasks']
-    })
+    )
   }
 }
 </script>
 
 <style scoped>
 .task-list-wrapper {
-  width: 100%;
   padding: 2em;
+
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 1em;
+  justify-content: flex-start;
+  align-items: flex-start;
 }
 </style>
