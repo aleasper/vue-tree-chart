@@ -3,6 +3,7 @@ import Util from '../base/utils'
 
 class OrgChart {
   d3: any
+  vueParent: any
   width: number
   height: number
   padding: number
@@ -26,7 +27,9 @@ class OrgChart {
   onDrag_: boolean
   dragStartPoint_: { x: number; y: number }
 
-  constructor() {
+  constructor(vueParent: any) {
+    this.vueParent = vueParent;
+    console.log(this.vueParent);
     this.d3 = d3
     this.init()
   }
@@ -43,14 +46,14 @@ class OrgChart {
     this.height = window.innerHeight
     this.padding = 20
     // tree node size
-    this.nodeWidth = 180
-    this.nodeHeight = 280
+    this.nodeWidth = 300
+    this.nodeHeight = 340
     // org unit size
     this.unitPadding = 20
-    this.unitWidth = 140
+    this.unitWidth = 280
     this.unitHeight = 100
     // animation duration
-    this.duration = 600
+    this.duration = 100
     this.scale = 1.0
   }
 
@@ -334,6 +337,15 @@ class OrgChart {
       const treeNode = node.data()[0]
       const data = treeNode.data
       self.context.fillStyle = '#3ca0ff'
+      if (data.task_count) {
+        if (data.task_count < 3) {
+          self.context.fillStyle = '#129305'
+        } else if (data.task_count < 6) {
+          self.context.fillStyle = '#a87011'
+        } else {
+          self.context.fillStyle = '#c20808'
+        }
+      }
       const indexX = Number(node.attr('x')) - self.unitWidth / 2
       const indexY = Number(node.attr('y')) - self.unitHeight / 2
 
@@ -354,20 +366,34 @@ class OrgChart {
         data.name,
         indexX + self.unitPadding,
         indexY + self.unitPadding,
-        '20px',
+        '24px',
         '#ffffff'
       )
+
       // Util.text(self.context, data.title, indexX + self.unitPadding, indexY + self.unitPadding + 30, '20px', '#000000')
       const maxWidth = self.unitWidth - 2 * self.unitPadding
-      Util.wrapText(
-        self.context,
-        data.title,
-        indexX + self.unitPadding,
-        indexY + self.unitPadding + 24,
-        maxWidth,
-        20,
-        '#000000'
-      )
+      if (data.position) {
+        Util.wrapText(
+          self.context,
+          data.position,
+          indexX + self.unitPadding,
+          indexY + self.unitPadding + 24,
+          maxWidth,
+          20,
+          '#000000'
+        )
+      }
+      if (data.task_count) {
+        Util.wrapText(
+          self.context,
+          `Загруженность: ${data.task_count} задач`,
+          indexX + self.unitPadding,
+          indexY + self.unitPadding + 24 + 24,
+          maxWidth,
+          20,
+          '#000000'
+        )
+      }
     })
   }
 
@@ -410,8 +436,9 @@ class OrgChart {
       )
       const node = self.colorNodeMap[colorStr]
       if (node) {
-        self.toggleTreeNode(node.data()[0])
-        self.update(node.data()[0])
+        self.update(node.data()[0]);
+        const personData = Object.assign({}, node.data()[0]['data']);
+        this.vueParent.selectPerson(Object.assign({}, personData));
       }
     })
   }
