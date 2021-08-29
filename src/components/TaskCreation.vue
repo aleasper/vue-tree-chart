@@ -117,7 +117,7 @@
       </div>
       <button
         :class="['main-btn', {'disabled': disabled}]"
-
+        :disabled="disabled || taskCreated"
         v-on:click="createTask"
       >Создать задачу</button>
       <span

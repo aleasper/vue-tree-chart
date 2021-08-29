@@ -65,9 +65,6 @@ export default {
           this.selectedMenu = 'taskList'
           break
 
-        case `/${Cons.CANVAS_TASK_SET}`:
-          this.selectedMenu = 'taskSet'
-          break
 
         default:
           this.selectedMenu = 'canvas'

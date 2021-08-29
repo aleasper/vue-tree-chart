@@ -86,10 +86,10 @@ export default {
       )
     },
     setTask() {
-      this.$router.push({
-        name: Cons.CANVAS_TASK_SET,
-        params: { 'users-list': ['user'] }
-      })
+      // this.$router.push({
+      //   name: Cons.CANVAS_TASK_SET,
+      //   params: { 'users-list': ['user'] }
+      // })
     }
   },
   created() {
